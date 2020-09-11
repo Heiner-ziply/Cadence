@@ -164,6 +164,7 @@ class Reminder {
 			if (!is_null($this->reminder['last_modified'])) {
 				$datestamp=$this->reminder['last_modified'];
 			}
+			$datestamp=DateTimeExt::CalDAVZFormatFromMySQLDateTime($datestamp);
 			$this->write_line("DTSTAMP:$datestamp"); 
 			
 			$tempstatus="STATUS:NEEDS-ACTION";
@@ -197,7 +198,10 @@ class Reminder {
 				//PRODID was already done above so we will skip it here
 				if (!is_null($this->reminder[$fields[$i]['col_name']]) and  $fields[$i]['calDAV_name']!="PRODID"   ) {
 					//write_line("SUMMARY:" . $this->reminder['summary']);
-					$this->write_line ($fields[$i]['calDAV_name'] . ":" . $this->reminder[$fields[$i]['col_name']]);
+					$outdata=$this->reminder[$fields[$i]['col_name']];
+					if ($fields[$i]['calDAV_name']=="CREATED") $outdata=DateTimeExt::CalDAVZFormatFromMySQLDateTime($outdata);
+					if ($fields[$i]['calDAV_name']=="LAST-MODIFIED") $outdata=DateTimeExt::CalDAVZFormatFromMySQLDateTime($outdata);
+					$this->write_line ($fields[$i]['calDAV_name'] . ":" . $outdata);
 				}
 			}
 			

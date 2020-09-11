@@ -65,7 +65,8 @@ if (isset($_SESSION['username'])) {
                 //update the record
                 $sql="UPDATE ". DB::$reminder_table . " SET calendar_id=" . $toID . " where id=" . $array[$i][0] . " and calendar_id is null and owner='" . $_SESSION['username'] . "'";
                 $dds->setSQL($sql);
-                
+                $sql="UPDATE ". DB::$reminder_table . " SET uid='" . CalDAV::uid() . "' where id=" . $array[$i][0] . " and uid is null and owner='" . $_SESSION['username'] . "'";
+                $dds->setSQL($sql);
                 //push the change
                 CalDAV::PushReminderUpdate($array[$i][0],true);
                 
