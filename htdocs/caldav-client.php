@@ -21,7 +21,7 @@
 */
 require_once 'Hydrogen/libDebug.php';
 //set this to true to send debug output from this PHP file to the debugger above
-$debug[__FILE__]=true;
+$debug[basename(__FILE__)]=false;
 /**
 * A class for accessing DAViCal via CalDAV, as a client
 */
@@ -177,7 +177,7 @@ class CalDAVClient {
   * @return string The content of the response from the server
   */
   function DoRequest( $relative_url = "" ) {
-	debug(__FILE__ . " DoRequest " . $this->requestMethod . " URL=" . $this->base_url . $relative_url,__FILE__);
+	debug(__FILE__ . " DoRequest " . $this->requestMethod . " URL=" . $this->base_url . $relative_url,basename(__FILE__));
     if(!defined("_FSOCK_TIMEOUT")){ define("_FSOCK_TIMEOUT", 10); }
     $headers = array();
 
@@ -192,8 +192,8 @@ class CalDAVClient {
     $headers[] = "User-Agent: " . $this->user_agent;
     $headers[] = 'Connection: close';
     $this->httpRequest = join("\r\n",$headers);
-	debug(__FILE__ . " DoRequest HEADERS=" . $this->httpRequest,__FILE__);
-	debug(__FILE__ . " DoRequest BODY=" . $this->body,__FILE__);
+	debug(__FILE__ . " DoRequest HEADERS=" . $this->httpRequest,basename(__FILE__));
+	debug(__FILE__ . " DoRequest BODY=" . $this->body,basename(__FILE__));
     $this->xmlRequest = $this->body;
 
     $fip = fsockopen( $this->protocol . '://' . $this->server, $this->port, $errno, $errstr, _FSOCK_TIMEOUT); //error handling?
@@ -286,15 +286,15 @@ PROPP;
 					
 					$ctag="";
 					$dispname="";
-					debug("---XML RESPONSE:: NAME:" . $xChild->getName() . " VALUE:" . $xChild->__toString() ,__FILE__);
+					debug("---XML RESPONSE:: NAME:" . $xChild->getName() . " VALUE:" . $xChild->__toString() ,basename(__FILE__));
 					if ($xChild->getName()=="href") {
 						$xchild_url= $xChild->__toString(); 
-						debug("href set to $xchild_url",__FILE__);
+						debug("href set to $xchild_url",basename(__FILE__));
 					}
 					foreach ($xChild as $xProps){
-						//debug("--- ---XML PROPSTAT",__FILE__ );
+						//debug("--- ---XML PROPSTAT",basename(__FILE__));
 						foreach ($xProps->children() as $xProp)	{
-							//debug("--- --- --- XML PROPERTY:: NAME:" . $xProp->getName() . " VALUE:" . $xProp->__toString(),__FILE__ );
+							//debug("--- --- --- XML PROPERTY:: NAME:" . $xProp->getName() . " VALUE:" . $xProp->__toString(),basename(__FILE__) );
 							if ($xProp->getName()=="displayname") {
 								$dispname = $xProp->__toString(); 
 							}
@@ -307,9 +307,9 @@ PROPP;
 
 					//now we check each child URL to see if it has a ctag (and display name)
 					//		if it does, its info is added to the return array
-					debug ("caldav-client: Checking ctag at href $xchild_url ",__FILE__);
+					debug ("caldav-client: Checking ctag at href $xchild_url ",basename(__FILE__));
 					if (strlen($ctag)>0) {
-						debug ("caldav-client: Adding calendar $calendar_count ($dispname) with ctag $ctag at href $xchild_url",__FILE__);
+						debug ("caldav-client: Adding calendar $calendar_count ($dispname) with ctag $ctag at href $xchild_url",basename(__FILE__));
 						$calendars[$calendar_count]['url']=$xchild_url;
 						$calendars[$calendar_count]['ctag']=$ctag;
 						$calendars[$calendar_count]['display-name']=$dispname;

@@ -98,7 +98,7 @@ class Reminders {
 			$sql = $sql . " WHERE id=" . $result_row['id'] . " AND owner='" . $sqlowner . "' ";
 			//echo "<P>SQL:" . $sql . "</P>";
 			$result = $dds->setSQL($sql);
-			if ($push) CalDAV::PushReminderUpdate($result_row['id']);
+			if ($push) CalDAV::PushReminderUpdate($result_row['id'],true);
 		} //if count > 0		
 	
 	
