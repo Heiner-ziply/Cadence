@@ -7,7 +7,6 @@ Built on Hydrogen framework (clone the Hydrogen repository inside this project's
 
 Testing Release 2.x with Hydrogen v1.x
 
-Demo at http://cadence.monstro.us
 
 ## Contents
 * the **htdocs** folder contains the PHP and image files to go in your web root
